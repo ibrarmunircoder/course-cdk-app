@@ -1,0 +1,59 @@
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as amplify from '@aws-cdk/aws-amplify-alpha';
+import * as codebuild from 'aws-cdk-lib/aws-codebuild';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { IAWSAmplifyStackProps } from '../bin/types';
+import { createName } from '../utils/cdk.utils';
+
+export class AmplifyStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props: IAWSAmplifyStackProps) {
+    super(scope, id, props);
+
+    const role = new iam.Role(this, 'Role', {
+      roleName: props.roleName,
+      description: props.roleDescription,
+      assumedBy: new iam.ServicePrincipal('amplify.amazonaws.com'),
+    });
+    role.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess-Amplify')
+    );
+
+    // build settings
+    const buildSpec = codebuild.BuildSpec.fromObjectToYaml({
+      version: '1.0',
+      frontend: {
+        phases: {
+          preBuild: {
+            commands: ['npm ci'],
+          },
+          build: {
+            commands: ['npm run build'],
+          },
+        },
+        artifacts: {
+          baseDirectory: 'build',
+          files: ['**/*'],
+        },
+        cache: { paths: ['node_modules/**/*'] },
+        appRoot: 'course-cdk-app/client',
+      },
+    });
+
+    const amplifyApp = new amplify.App(this, createName('course-cdk-app'), {
+      appName: props.appName,
+      sourceCodeProvider: new amplify.GitLabSourceCodeProvider({
+        owner: props.gitOwner,
+        repository: props.gitRepository,
+        oauthToken: cdk.SecretValue.secretsManager('github-token'),
+      }),
+      role,
+      buildSpec,
+      platform: amplify.Platform.WEB,
+    });
+
+    amplifyApp.addCustomRule(
+      amplify.CustomRule.SINGLE_PAGE_APPLICATION_REDIRECT
+    );
+  }
+}
