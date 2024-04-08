@@ -21,36 +21,55 @@ export class AmplifyStack extends cdk.Stack {
 
     // build settings
     const buildSpec = codebuild.BuildSpec.fromObjectToYaml({
-      version: '1.0',
-      frontend: {
-        phases: {
-          preBuild: {
-            commands: ['npm ci'],
+      version: 1,
+      applications: [
+        {
+          frontend: {
+            phases: {
+              preBuild: {
+                commands: ['npm ci'],
+              },
+              build: {
+                commands: [
+                  `echo VITE_IDENTITY_POOL_ID=$IDENTITY_POOL_ID >> .env`,
+                  `echo VITE_USER_POOL_ID=$USER_POOL_ID >> .env`,
+                  `echo VITE_USER_POOL_CLIENT_ID=$USER_POOL_CLIENT_ID >> .env`,
+                  `echo VITE_REGION=$REGION >> .env`,
+                  'npm run build',
+                ],
+              },
+            },
+            artifacts: {
+              baseDirectory: 'build',
+              files: ['**/*'],
+            },
+            cache: { paths: ['node_modules/**/*'] },
           },
-          build: {
-            commands: ['npm run build'],
-          },
+          appRoot: 'client',
         },
-        artifacts: {
-          baseDirectory: 'build',
-          files: ['**/*'],
-        },
-        cache: { paths: ['node_modules/**/*'] },
-        appRoot: 'course-cdk-app/client',
-      },
+      ],
     });
 
     const amplifyApp = new amplify.App(this, createName('course-cdk-app'), {
       appName: props.appName,
-      sourceCodeProvider: new amplify.GitLabSourceCodeProvider({
+      sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         owner: props.gitOwner,
         repository: props.gitRepository,
-        oauthToken: cdk.SecretValue.secretsManager('github-token'),
+        oauthToken: cdk.SecretValue.secretsManager('github-token2'),
       }),
       role,
       buildSpec,
       platform: amplify.Platform.WEB,
+      environmentVariables: {
+        AMPLIFY_MONOREPO_APP_ROOT: 'client',
+        IDENTITY_POOL_ID: props.identityPoolId,
+        USER_POOL_ID: props.userPoolId,
+        USER_POOL_CLIENT_ID: props.userPoolClientId,
+        REGION: this.region,
+      },
     });
+
+    amplifyApp.addBranch('main');
 
     amplifyApp.addCustomRule(
       amplify.CustomRule.SINGLE_PAGE_APPLICATION_REDIRECT

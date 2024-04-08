@@ -6,4 +6,7 @@ export interface IAWSAmplifyStackProps extends StackProps {
   gitOwner: string;
   roleName: string;
   roleDescription: string;
+  userPoolId: string;
+  userPoolClientId: string;
+  identityPoolId: string;
 }

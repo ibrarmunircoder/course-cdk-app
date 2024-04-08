@@ -1,11 +1,19 @@
 import { Amplify } from 'aws-amplify';
-import awsConfig from './aws-config';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { AppRouter } from '@/routes/AppRouter';
+import awsConfig from '@/aws-config';
+import theme from '@/theme';
 import './App.css';
-console.log(awsConfig);
+
 Amplify.configure(awsConfig);
 
 function App() {
-  return <div>App</div>;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppRouter />
+    </ThemeProvider>
+  );
 }
 
 export default App;
