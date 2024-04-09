@@ -41,7 +41,7 @@ export class AmplifyStack extends cdk.Stack {
               },
             },
             artifacts: {
-              baseDirectory: 'build',
+              baseDirectory: 'dist',
               files: ['**/*'],
             },
             cache: { paths: ['node_modules/**/*'] },
