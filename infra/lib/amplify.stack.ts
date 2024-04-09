@@ -35,6 +35,7 @@ export class AmplifyStack extends cdk.Stack {
                   `echo VITE_USER_POOL_ID=$USER_POOL_ID >> .env`,
                   `echo VITE_USER_POOL_CLIENT_ID=$USER_POOL_CLIENT_ID >> .env`,
                   `echo VITE_REGION=$REGION >> .env`,
+                  `echo VITE_API_ENDPOINT=$API_ENDPOINT >> .env`,
                   'npm run build',
                 ],
               },
@@ -66,6 +67,7 @@ export class AmplifyStack extends cdk.Stack {
         USER_POOL_ID: props.userPoolId,
         USER_POOL_CLIENT_ID: props.userPoolClientId,
         REGION: this.region,
+        API_ENDPOINT: props.apiEndpoint,
       },
     });
 

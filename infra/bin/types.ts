@@ -1,4 +1,6 @@
 import { StackProps } from 'aws-cdk-lib';
+import { IUserPool } from 'aws-cdk-lib/aws-cognito';
+import { ITable } from 'aws-cdk-lib/aws-dynamodb';
 
 export interface IAWSAmplifyStackProps extends StackProps {
   appName: string;
@@ -9,4 +11,10 @@ export interface IAWSAmplifyStackProps extends StackProps {
   userPoolId: string;
   userPoolClientId: string;
   identityPoolId: string;
+  apiEndpoint: string;
+}
+
+export interface IRestApiStackProps extends StackProps {
+  userPool: IUserPool;
+  table: ITable;
 }
