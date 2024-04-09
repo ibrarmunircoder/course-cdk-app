@@ -6,7 +6,7 @@ import theme from '@/theme';
 import './App.css';
 
 Amplify.configure(awsConfig);
-
+console.log(awsConfig);
 function App() {
   return (
     <ThemeProvider theme={theme}>
