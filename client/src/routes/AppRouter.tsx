@@ -7,14 +7,15 @@ import { withLoading } from 'shared/hocs/WithLoading';
 const HomePage = lazy(() => import('@pages/home'));
 const SignUpPage = lazy(() => import('@pages/sign-up'));
 const SignInPage = lazy(() => import('@pages/sign-in'));
+const CoursePage = lazy(() => import('@pages/course'));
 
 const Home = withLoading(HomePage);
 const SignUp = withLoading(SignUpPage);
 const SignIn = withLoading(SignInPage);
+const Course = withLoading(CoursePage);
 
 export const AppRouter = () => {
   const { isAuthenticating } = useLoadUserSession();
-  console.log(isAuthenticating);
 
   if (isAuthenticating) {
     return <FullPageCircularSpinner />;
@@ -27,6 +28,7 @@ export const AppRouter = () => {
           <Route index element={<Home />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
+          <Route path="/course" element={<Course />} />
         </Route>
       </Router>
     </BrowserRouter>

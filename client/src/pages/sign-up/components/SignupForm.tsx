@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useSignUpForm } from '../hooks/useSignUpForm';
 import { Controller } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 export const SignupForm = () => {
   const { control, isSubmitting, onSubmit, error, resetError } =
     useSignUpForm();
@@ -89,6 +90,12 @@ export const SignupForm = () => {
               'Submit'
             )}
           </Button>
+        </Box>
+        <Box my={2} display="flex" justifyContent="center" gap={1}>
+          <Typography>Already have an account?</Typography>
+          <Typography component={Link} to="/login">
+            Login
+          </Typography>
         </Box>
       </Box>
     </Card>

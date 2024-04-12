@@ -44,6 +44,28 @@ export const Navigation = () => {
         >
           LOGO
         </Typography>
+        {isLoggedIn && (
+          <Box sx={{ flexGrow: 1 }}>
+            <Box
+              component="ul"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                listStyle: 'none',
+                '&  a': {
+                  color: 'inherit',
+                  textDecoration: 'none',
+                },
+              }}
+              gap={2}
+            >
+              <Typography component="li">
+                <Link to="/course">Course 1</Link>
+              </Typography>
+            </Box>
+          </Box>
+        )}
         <Box sx={{ marginLeft: 'auto' }}>
           {isLoggedIn ? (
             <Button onClick={handleLogout} color="inherit">

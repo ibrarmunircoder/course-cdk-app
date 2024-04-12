@@ -1,8 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
 import * as amplify from '@aws-cdk/aws-amplify-alpha';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import { Construct } from 'constructs';
 import { IAWSAmplifyStackProps } from '../bin/types';
 import { createName } from '../utils/cdk.utils';
 
@@ -36,6 +36,7 @@ export class AmplifyStack extends cdk.Stack {
                   `echo VITE_USER_POOL_CLIENT_ID=$USER_POOL_CLIENT_ID >> .env`,
                   `echo VITE_REGION=$REGION >> .env`,
                   `echo VITE_API_ENDPOINT=$API_ENDPOINT >> .env`,
+                  `echo VITE_API_NAME=$API_NAME >> .env`,
                   'npm run build',
                 ],
               },
@@ -68,6 +69,7 @@ export class AmplifyStack extends cdk.Stack {
         USER_POOL_CLIENT_ID: props.userPoolClientId,
         REGION: this.region,
         API_ENDPOINT: props.apiEndpoint,
+        API_NAME: props.apiName,
       },
     });
 

@@ -4,9 +4,7 @@ import { AppRouter } from '@/routes/AppRouter';
 import awsConfig from '@/aws-config';
 import theme from '@/theme';
 import './App.css';
-console.log(import.meta.env);
 Amplify.configure(awsConfig);
-console.log(awsConfig);
 function App() {
   return (
     <ThemeProvider theme={theme}>

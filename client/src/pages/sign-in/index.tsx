@@ -10,6 +10,7 @@ import {
 import { Controller } from 'react-hook-form';
 import { useSignInForm } from './hooks/useSignInForm';
 import { MainContent } from '@/shared/components';
+import { Link } from 'react-router-dom';
 
 const SignIn = () => {
   const { control, onSubmit, resetError, error, isSubmitting } =
@@ -77,6 +78,12 @@ const SignIn = () => {
                 'Submit'
               )}
             </Button>
+          </Box>
+          <Box my={2} display="flex" justifyContent="center" gap={1}>
+            <Typography>Don't have an account?</Typography>
+            <Typography component={Link} to="/register">
+              Register
+            </Typography>
           </Box>
         </Box>
       </Card>

@@ -8,5 +8,12 @@ const awsConfig: ResourcesConfig = {
       userPoolId: import.meta.env.VITE_USER_POOL_ID,
     },
   },
+  API: {
+    REST: {
+      [import.meta.env.VITE_API_NAME]: {
+        endpoint: import.meta.env.VITE_API_ENDPOINT,
+      },
+    },
+  },
 };
 export default awsConfig;

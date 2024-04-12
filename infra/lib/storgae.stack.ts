@@ -10,6 +10,7 @@ import path = require('path');
 
 export class StorageStack extends cdk.Stack {
   public readonly table: dynamodb.ITable;
+  public readonly bucket: s3.IBucket;
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -27,10 +28,13 @@ export class StorageStack extends cdk.Stack {
         },
         memorySize: 128,
         timeout: cdk.Duration.seconds(30),
+        environment: {
+          NODE_ENV: process.env.NODE_ENV!,
+        },
       }
     );
 
-    const bucket = new s3.Bucket(this, createName('courseAppVideos'), {
+    this.bucket = new s3.Bucket(this, createName('courseAppVideos'), {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       cors: [
         {
@@ -55,7 +59,9 @@ export class StorageStack extends cdk.Stack {
       ],
     });
 
-    bucket.addEventNotification(
+    this.bucket.grantReadWrite(lambdaTrigger);
+
+    this.bucket.addEventNotification(
       s3.EventType.OBJECT_CREATED,
       new s3Events.LambdaDestination(lambdaTrigger)
     );

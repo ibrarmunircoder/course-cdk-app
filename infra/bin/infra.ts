@@ -14,6 +14,7 @@ const storageStack = new StorageStack(app, 'CourseStorageStack');
 const apiStack = new RestApiStack(app, 'CourseAppApiStack', {
   userPool: cognitoStack.userPool,
   table: storageStack.table,
+  bucket: storageStack.bucket,
 });
 
 new AmplifyStack(app, 'CourseCdkAmplifyStack', {
@@ -26,4 +27,5 @@ new AmplifyStack(app, 'CourseCdkAmplifyStack', {
   userPoolClientId: cognitoStack.userPoolWebClient.userPoolClientId,
   identityPoolId: cognitoStack.identityPool.identityPoolId,
   apiEndpoint: apiStack.api.url,
+  apiName: apiStack.api.restApiName,
 });

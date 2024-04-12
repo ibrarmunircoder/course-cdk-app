@@ -44,8 +44,14 @@ export class RestApiStack extends cdk.Stack {
         },
         memorySize: 128,
         timeout: cdk.Duration.seconds(30),
+        environment: {
+          BUCKET_NAME: props.bucket.bucketName,
+          NODE_ENV: process.env.NODE_ENV!,
+        },
       }
     );
+
+    props.bucket.grantReadWrite(courseVideosFunction);
 
     props.table.grantReadWriteData(courseVideosFunction);
 
@@ -63,6 +69,9 @@ export class RestApiStack extends cdk.Stack {
         },
         memorySize: 128,
         timeout: cdk.Duration.seconds(30),
+        environment: {
+          NODE_ENV: process.env.NODE_ENV!,
+        },
       }
     );
 
@@ -82,6 +91,9 @@ export class RestApiStack extends cdk.Stack {
         },
         memorySize: 128,
         timeout: cdk.Duration.seconds(30),
+        environment: {
+          NODE_ENV: process.env.NODE_ENV!,
+        },
       }
     );
 
