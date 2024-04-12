@@ -1,4 +1,9 @@
-import { FullPageCircularSpinner, Layout } from '@/shared/components';
+import {
+  AuthRedirect,
+  FullPageCircularSpinner,
+  Layout,
+  RequireAuth,
+} from '@/shared/components';
 import { useLoadUserSession } from '@/shared/hooks/useLoadUserSession';
 import { lazy } from 'react';
 import { BrowserRouter, Routes as Router, Route } from 'react-router-dom';
@@ -26,9 +31,14 @@ export const AppRouter = () => {
       <Router>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/register" element={<SignUp />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/course" element={<Course />} />
+          <Route element={<AuthRedirect />}>
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/login" element={<SignIn />} />
+          </Route>
+
+          <Route element={<RequireAuth />}>
+            <Route path="/course" element={<Course />} />
+          </Route>
         </Route>
       </Router>
     </BrowserRouter>
